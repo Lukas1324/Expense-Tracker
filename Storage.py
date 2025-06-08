@@ -10,6 +10,9 @@ class Storage:
         self.conn = sqlite3.connect("DB_Ausgaben.db")
         self.cursor = self.conn.cursor()
 
+    def clearLocalAusgaben(self):
+        self.ausgaben = []
+
     def appendAusgaben(self, ausgabe):
         print(type(ausgabe))
         if(isinstance(ausgabe, Ausgaben)):
@@ -36,3 +39,11 @@ class Storage:
 
     def closePipeline(self):
         self.conn.close()
+
+    def deleteLastAusgabeInSQL(self):
+        self.cursor.execute("Select * From ausgaben Order By id DESC Limit 1")
+        delZeile = self.cursor.fetchone()[0]
+        print(delZeile)
+
+        self.cursor.execute("DELETE FROM ausgaben Where id = ?", (delZeile,))
+        self.conn.commit()

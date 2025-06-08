@@ -15,9 +15,10 @@ ersteAusagbe = Ausgaben(10.0,"Lebensmittel")
 zweiteAusagbe = Ausgaben(15.2,"Wasser")
 mein_storage.appendAusgaben(ersteAusagbe)
 mein_storage.appendAusgaben(zweiteAusagbe)
+mein_storage.deleteLastAusgabeInSQL()
+mein_storage.deleteLastAusgabeInSQL()
 """
 
-mein_storage.printStorage()
 mein_storage.getAllFromSQL()
 mein_storage.printStorage()
 mein_storage.closePipeline()
