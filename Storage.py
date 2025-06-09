@@ -10,32 +10,18 @@ class Storage:
         self.conn = sqlite3.connect("DB_Ausgaben.db")
         self.cursor = self.conn.cursor()
 
-    def clearLocalAusgaben(self):
-        self.ausgaben = []
 
-    def appendAusgaben(self, ausgabe):
-        print(type(ausgabe))
-        if(isinstance(ausgabe, Ausgaben)):
-            print("Ist Ausgaben")
-            self.ausgaben.append(ausgabe)
-        else:
-            print("Ist keine Ausgabe")
-
-
+    ###SQL------------------------------------------------------------------------------------------------------------------------------------
     def getAllFromSQL(self):
-        self.cursor.execute("Select betrag, grund From ausgaben")
-        for betrag,grund in self.cursor.fetchall():
-            self.appendAusgaben(Ausgaben(betrag, grund))
+        self.cursor.execute("Select betrag, grund, datetime, waehrung  From ausgaben")
+        for betrag, grund, zeit, waehrung in self.cursor.fetchall():
+            self.appendAusgaben(Ausgaben(betrag, grund, waehrung, zeit))
 
     def insertToSQL(self):
         for ausgabe in self.ausgaben:
-            self.cursor.execute("INSERT INTO ausgaben (betrag, grund) VALUES (?, ?)", (ausgabe.betrag, ausgabe.grund))
+            self.cursor.execute("INSERT INTO ausgaben (betrag, grund, datetime, waehrung) VALUES (?, ?)", (ausgabe.betrag, ausgabe.grund, ausgabe.datumUhrzeit, ausgabe.waehrung))
         
-        self.conn.commit()
-
-    def printStorage(self):
-        for ausgabe in self.ausgaben:
-            ausgabe.printAusgabe()
+        self.conn.commit()  
 
     def closePipeline(self):
         self.conn.close()
@@ -47,3 +33,26 @@ class Storage:
 
         self.cursor.execute("DELETE FROM ausgaben Where id = ?", (delZeile,))
         self.conn.commit()
+
+    def sonderManipulationSQL(self):
+        pass
+
+
+
+    ###Lokale Liste---------------------------------------------------------------------------------------------------------------------------------------------       
+
+    def clearLocalAusgaben(self):
+        self.ausgaben = []
+
+    def appendAusgaben(self, ausgabe):
+        if(isinstance(ausgabe, Ausgaben)):
+            self.ausgaben.append(ausgabe)
+        else:
+            print("Ist keine Ausgabe")
+
+
+    def printStorage(self):
+        for ausgabe in self.ausgaben:
+            print(ausgabe.__str__())
+
+    
