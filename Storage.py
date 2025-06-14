@@ -13,13 +13,13 @@ class Storage:
 
     ###SQL------------------------------------------------------------------------------------------------------------------------------------
     def getAllFromSQL(self):
-        self.cursor.execute("Select betrag, grund, waehrung, jahr, monat, tag, uhrzeit  From ausgaben")
-        for betrag, grund, waehrung, jahr, monat, tag, uhrzeit in self.cursor.fetchall():
-            self.appendAusgaben(Ausgaben(betrag, grund, waehrung, jahr, monat, tag, uhrzeit))
+        self.cursor.execute("Select betrag, grund, waehrung, zeit  From ausgaben")
+        for betrag, grund, waehrung, zeit in self.cursor.fetchall():
+            self.appendAusgaben(Ausgaben(betrag, grund, waehrung, zeit))
 
     def insertToSQL(self):
         for ausgabe in self.ausgaben:
-            self.cursor.execute("INSERT INTO ausgaben (betrag, grund, waehrung, jahr, monat, tag, uhrzeit) VALUES (?, ?)", (ausgabe.betrag, ausgabe.grund, ausgabe.waehrung, ausgabe.jahr, ausgabe.monat, ausgabe.tag, ausgabe.stunde))
+            self.cursor.execute("INSERT INTO ausgaben (betrag, grund, waehrung, zeit) VALUES (?, ?, ?, ?)", (ausgabe.betrag, ausgabe.grund, ausgabe.waehrung, ausgabe.zeit))
         
         self.conn.commit()  
 
