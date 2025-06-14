@@ -16,5 +16,7 @@ mein_storage.appendAusgaben(ausgabe)
 
 mein_storage.getAllFromSQL()
 mein_storage.printStorage()
+mein_storage.sonderManipulationSQL()
+print(mein_calc.calcTotal())
 mein_storage.closePipeline()
 
