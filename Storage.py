@@ -35,7 +35,8 @@ class Storage:
         self.conn.commit()
 
     def sonderManipulationSQL(self):
-        pass
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS ausgaben (id INTEGER PRIMARY KEY AUTOINCREMENT, betrag REAL, grund TEXT, waehrung TEXT, zeit TEXT)")
+        self.conn.commit()
 
 
 

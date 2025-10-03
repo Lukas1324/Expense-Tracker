@@ -13,7 +13,7 @@ def userConsole():
         
         eingabe = int(input(
             "\nWas magst du machen:\n"
-            "\033[35mEine Ausgabe eintragen (1)\033[0m, Die kompletten Kosten anzeigen lassen (2), Die Ausgaben in die SQL Datei einführen (3),\n"
+            "Eine Ausgabe eintragen (1), Die kompletten Kosten anzeigen lassen (2), Die Ausgaben in die SQL Datei einführen (3),\n"
             "Alle Ausgaben von der SQL holen (4), Alle Ausgaben printen (5), Das Programm schließen (6)\n"
             ))
 
