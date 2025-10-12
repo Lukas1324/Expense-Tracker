@@ -1,41 +1,37 @@
-from Calculation import Calc
-from Storage import Storage
-from Ausgaben import Ausgaben
+from flask import Flask, render_template, redirect, url_for, request
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
-def userInput():
-    inpPreis = float(input("Wie viel hat es gekostet: "))
-    inpGrund = input("Was hast du gekauft: ")
-    mein_storage.appendAusgaben(Ausgaben(inpPreis, inpGrund))
-    
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
-def userConsole():
-    while True:
-        
-        eingabe = int(input(
-            "\nWas magst du machen:\n"
-            "Eine Ausgabe eintragen (1), Die kompletten Kosten anzeigen lassen (2), Die Ausgaben in die SQL Datei einführen (3),\n"
-            "Alle Ausgaben von der SQL holen (4), Alle Ausgaben printen (5), Das Programm schließen (6)\n"
-            ))
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    amount = db.Column(db.Float, nullable=False)
+    content = db.Column(db.String(200), nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
+@app.route('/')
+def home():
+    return render_template('index.html')
 
-        print("")
-        if(eingabe == 1):
-            userInput()
-        elif(eingabe == 2):
-            print(mein_calc.calcTotal())
-        elif(eingabe == 3):
-            mein_storage.insertToSQL()
-        elif(eingabe == 4):
-            mein_storage.getAllFromSQL()
-        elif(eingabe == 5):
-            mein_storage.printStorage()
-        elif(eingabe == 6):
-            mein_storage.closePipeline()
-            return "Programm beendet"
+@app.route('/view-expenses.html', methods=['GET'])
+def view_expenses():
+    expenses = Message.query.order_by(Message.date.desc()).all()  # Alle Einträge holen
+    return render_template('view-expenses.html', expenses=expenses)  # An das Template übergeben
 
+@app.route('/add-expenses.html', methods=['GET','POST'])
+def add_expenses():
+    if request.method == 'POST':
+        description = request.form['description']
+        amount = float(request.form['amount'])
+        date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        db.session.add(Message(amount=amount, content=description, date=date))
+        db.session.commit()
+        return redirect(url_for('add_expenses'))
+    return render_template('add-expenses.html')
 
-mein_storage = Storage()
-mein_calc = Calc(mein_storage)
-print(userConsole())
-
-
+if __name__ == '__main__':
+    app.run(debug=True) 

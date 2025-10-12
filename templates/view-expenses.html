@@ -16,7 +16,7 @@
             </tr>
             {% for expense in expenses %}
             <tr>
-                <td>{{ expense.description }}</td>
+                <td>{{ expense.content }}</td>
                 <td>{{ expense.amount }}</td>
                 <td>{{ expense.date }}</td>
             </tr>
@@ -25,6 +25,6 @@
     {% else %}
         <p>No expenses recorded yet.</p>
     {% endif %}
-    <a href="/templates/">Back to Home</a>
+    <a href="/">Back to Home</a>
 </body>
 </html>
