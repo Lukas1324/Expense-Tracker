@@ -13,12 +13,14 @@
                 <th>Description</th>
                 <th>Amount</th>
                 <th>Date</th>
+                <th>Created at</th>
             </tr>
             {% for expense in expenses %}
             <tr>
                 <td>{{ expense.content }}</td>
                 <td>{{ expense.amount }}</td>
-                <td>{{ expense.date }}</td>
+                <td>{{ expense.date.strftime('%d/%m/%Y') }}</td>
+                <td>{{ expense.created_at  }}</td>
             </tr>
             {% endfor %}
         </table>

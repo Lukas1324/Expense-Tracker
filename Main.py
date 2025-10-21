@@ -12,6 +12,7 @@ class Message(db.Model):
     amount = db.Column(db.Float, nullable=False)
     content = db.Column(db.String(200), nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
 
 @app.route('/')
 def home():
@@ -30,7 +31,7 @@ def add_expenses():
         date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         db.session.add(Message(amount=amount, content=description, date=date))
         db.session.commit()
-        return redirect(url_for('add_expenses'))
+        201
     return render_template('add-expenses.html')
 
 if __name__ == '__main__':
