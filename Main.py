@@ -1,18 +1,16 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from Storage import Storage
+from Ausgaben import AusgabenDTO
 
+### Make Login and then ceck if for user there is a database or create new one
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+testStorage = Storage("test")  # Beispiel für einen Benutzernamen
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float, nullable=False)
-    content = db.Column(db.String(200), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
-    created_at = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
+
+####Aufgaben fürs nächste mal:
+# Die Datenbank mit viewexpenses und addexpenses verbinden
 
 @app.route('/')
 def home():
@@ -20,7 +18,9 @@ def home():
 
 @app.route('/view-expenses.html', methods=['GET'])
 def view_expenses():
-    expenses = Message.query.order_by(Message.date.desc()).all()  # Alle Einträge holen
+
+    expenses = testStorage.getAllFromSQL()
+    print(expenses) # Alle Einträge holen
     return render_template('view-expenses.html', expenses=expenses)  # An das Template übergeben
 
 @app.route('/add-expenses.html', methods=['GET','POST'])
@@ -29,9 +29,8 @@ def add_expenses():
         description = request.form['description']
         amount = float(request.form['amount'])
         date = datetime.strptime(request.form['date'], '%Y-%m-%d')
-        db.session.add(Message(amount=amount, content=description, date=date))
-        db.session.commit()
-        201
+        testStorage.appendAusgaben()
+        
     return render_template('add-expenses.html')
 
 if __name__ == '__main__':
