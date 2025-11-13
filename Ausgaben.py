@@ -1,15 +1,23 @@
-from datetime import datetime
-
-class Ausgaben:
-    def __init__(self, betrag, grund, waehrung = "EUR", zeit = datetime.now().strftime("%d-%m-%Y | %H-%M")):
-        self.betrag = betrag
-        self.grund = grund
-        self.waehrung = waehrung
-
-        ##Datetime
-        self.zeit = zeit
+class AusgabenDTO:
+    def __init__(self, id, amount, content, date, created_at):
+        self.id = id
+        self.amount = amount
+        self.content = content
+        self.date = date
+        self.created_at = created_at
        
-        
+    def getId(self):
+        return self.id
     
-    def __str__(self):
-        return f"{self.zeit} Uhr - {self.grund}: {self.betrag:.2f} {self.waehrung}"
+    def getAmount(self):
+        return self.amount
+    
+    def getContent(self):
+        return self.content
+    
+    def getDate(self):
+        return self.date
+    
+    def getCreatedAt(self):
+        return self.created_at
+    

@@ -1,31 +1,35 @@
-from Ausgaben import Ausgaben
+from Ausgaben import AusgabenDTO
 import sqlite3
+from Tables import tabellen
 
 
 
 
 class Storage:
-    def __init__(self):
-        self.ausgaben: list[Ausgaben] = []
-        self.conn = sqlite3.connect("DB_Ausgaben.db")
+    def __init__(self, name):
+        self.ausgaben: list[AusgabenDTO] = []
+        self.conn = sqlite3.connect("DB_Ausgaben_" + name + ".db")
         self.cursor = self.conn.cursor()
 
 
     ###SQL------------------------------------------------------------------------------------------------------------------------------------
     def getAllFromSQL(self):
-        self.cursor.execute("Select betrag, grund, waehrung, zeit  From ausgaben")
-        for betrag, grund, waehrung, zeit in self.cursor.fetchall():
-            self.appendAusgaben(Ausgaben(betrag, grund, waehrung, zeit))
+        self.cursor.execute("Select id, amount, content, date, created_at  From ausgaben")
+        for id, amount, content, date, created_at in self.cursor.fetchall():
+            self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at))
+        return self.ausgaben
+        
 
     def insertToSQL(self):
         for ausgabe in self.ausgaben:
-            self.cursor.execute("INSERT INTO ausgaben (betrag, grund, waehrung, zeit) VALUES (?, ?, ?, ?)", (ausgabe.betrag, ausgabe.grund, ausgabe.waehrung, ausgabe.zeit))
+            self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at) VALUES (?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at))
         
         self.conn.commit()  
 
     def closePipeline(self):
         self.conn.close()
 
+##### Ab hier funktioniert es nicht mehr, ist noch mit dem alten System
     def deleteLastAusgabeInSQL(self):
         self.cursor.execute("Select * From ausgaben Order By id DESC Limit 1")
         delZeile = self.cursor.fetchone()[0]
@@ -38,6 +42,10 @@ class Storage:
         self.cursor.execute("CREATE TABLE IF NOT EXISTS ausgaben (id INTEGER PRIMARY KEY AUTOINCREMENT, betrag REAL, grund TEXT, waehrung TEXT, zeit TEXT)")
         self.conn.commit()
 
+    def createTables(self):
+        for table in tabellen:
+            self.cursor.execute(table)
+        self.conn.commit()
 
 
     ###Lokale Liste---------------------------------------------------------------------------------------------------------------------------------------------       
@@ -46,7 +54,7 @@ class Storage:
         self.ausgaben = []
 
     def appendAusgaben(self, ausgabe):
-        if(isinstance(ausgabe, Ausgaben)):
+        if(isinstance(ausgabe, AusgabenDTO)):
             self.ausgaben.append(ausgabe)
         else:
             print("Ist keine Ausgabe")
