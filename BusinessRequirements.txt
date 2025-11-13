@@ -1,0 +1,15 @@
+Add Filters for view_data
+Add Export to CSV functionality
+Add User Authentication
+Make it Online and not local
+Add Page graphics where the expenses are aggregated shown
+
+
+
+//Only if nothing is to do
+Add Multi-Currency Support
+Add Budgeting Features
+Add Recurring Expenses
+
+
+

@@ -25,9 +25,9 @@ def add_expenses():
     if request.method == 'POST':
         description = request.form['description']
         amount = float(request.form['amount'])
-        date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        date = datetime.strptime(request.form['date'], '%d.%m.%Y')
         label = request.form['label']   
-        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%Y-%m-%d'), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), label))
+        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%d.%m.%Y'), datetime.now().strftime('%d.%m.%Y %h:%m:%s'), label))
         
     return render_template('add-expenses.html')
 

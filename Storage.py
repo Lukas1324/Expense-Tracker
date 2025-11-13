@@ -24,25 +24,23 @@ class Storage:
         self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at, label) VALUES (?, ?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at, ausgabe.label))
         self.conn.commit()
 
-    def insertAllToSQL(self):
-        for ausgabe in self.ausgaben:
-            self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at, label) VALUES (?, ?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at, ausgabe.label))
-        
-        self.conn.commit()  
+    def insertAllToSQL(self, listAusgaben: list[AusgabenDTO]):
+        for ausgabe in listAusgaben:
+            self.insertAusgabeToSQL(ausgabe)
 
     def closePipeline(self):
         self.conn.close()
 
     def deleteLastAusgabeInSQL(self):
-        self.cursor.execute("Select * From ausgaben Order By id DESC Limit 1")
-        delZeile = self.cursor.fetchone()[0]
-        print(delZeile)
-
-        self.cursor.execute("DELETE FROM ausgaben Where id = ?", (delZeile))
+        self.cursor.execute("DELETE From Ausgaben where id = (Select id FROM ausgaben Order By id DESC Limit 1)")
         self.conn.commit()
 
-    def sonderManipulationSQL(self):
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS ausgaben (id INTEGER PRIMARY KEY AUTOINCREMENT, betrag REAL, grund TEXT, waehrung TEXT, zeit TEXT)")
+    def deleteAllInSQL(self):
+        self.cursor.execute("DELETE FROM ausgaben")
+        self.conn.commit()
+
+    def sonderManipulationSQL(self, textManipulation):
+        self.cursor.execute(textManipulation)
         self.conn.commit()
 
     def createTables(self):
@@ -51,8 +49,8 @@ class Storage:
         self.conn.commit()
 
 
-    ###Lokale Liste---------------------------------------------------------------------------------------------------------------------------------------------       
-
+######Old Code
+""""
     def clearLocalAusgaben(self):
         self.ausgaben = []
 
@@ -66,7 +64,7 @@ class Storage:
     def printStorage(self):
         for ausgabe in self.ausgaben:
             print(ausgabe.__str__())
-
+"""
 
 
 
