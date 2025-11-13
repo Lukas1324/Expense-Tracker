@@ -14,6 +14,7 @@ class Storage:
 
     ###SQL------------------------------------------------------------------------------------------------------------------------------------
     def getAllFromSQL(self):
+        self.clearLocalAusgaben()
         self.cursor.execute("Select id, amount, content, date, created_at  From ausgaben")
         for id, amount, content, date, created_at in self.cursor.fetchall():
             self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at))

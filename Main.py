@@ -28,17 +28,10 @@ def add_expenses():
     if request.method == 'POST':
         description = request.form['description']
         amount = float(request.form['amount'])
-        date = request.form['date']
+        date = datetime.strptime(request.form['date'], '%Y-%m-%d')
+        testStorage.appendAusgaben()
         
-        # Erstelle eine neue Ausgabe und füge sie zur Liste hinzu
-        ausgabe = AusgabenDTO(None, amount, description, date, datetime.now())
-        testStorage.appendAusgaben(ausgabe)
-        testStorage.insertToSQL()  # Speichere alle in der Liste zur Datenbank
-        testStorage.clearLocalAusgaben()  # Leere die Liste
-        
-        return redirect(url_for('view_expenses'))
-    
     return render_template('add-expenses.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
