@@ -8,7 +8,7 @@ from Tables import tabellen
 class Storage:
     def __init__(self, name):
         self.ausgaben: list[AusgabenDTO] = []
-        self.conn = sqlite3.connect("DB_Ausgaben_" + name + ".db")
+        self.conn = sqlite3.connect("DB_Ausgaben_" + name + ".db", check_same_thread=False)
         self.cursor = self.conn.cursor()
 
 
@@ -20,8 +20,11 @@ class Storage:
             self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at))
         return self.ausgaben
         
+    def insertAusgabeToSQL(self, ausgabe: AusgabenDTO):
+        self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at) VALUES (?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at))
+        self.conn.commit()
 
-    def insertToSQL(self):
+    def insertAllToSQL(self):
         for ausgabe in self.ausgaben:
             self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at) VALUES (?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at))
         
@@ -30,7 +33,6 @@ class Storage:
     def closePipeline(self):
         self.conn.close()
 
-##### Ab hier funktioniert es nicht mehr, ist noch mit dem alten System
     def deleteLastAusgabeInSQL(self):
         self.cursor.execute("Select * From ausgaben Order By id DESC Limit 1")
         delZeile = self.cursor.fetchone()[0]

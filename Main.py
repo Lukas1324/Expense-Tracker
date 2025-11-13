@@ -9,8 +9,7 @@ app = Flask(__name__)
 testStorage = Storage("test")  # Beispiel für einen Benutzernamen
 
 
-####Aufgaben fürs nächste mal:
-# Die Datenbank mit viewexpenses und addexpenses verbinden
+####Läd so lange wsl weil die Daten erst von SQL gezogen werden müssen. Die sollten direkt geladen werden, bevor man auf die Seite geht
 
 @app.route('/')
 def home():
@@ -20,7 +19,6 @@ def home():
 def view_expenses():
 
     expenses = testStorage.getAllFromSQL()
-    print(expenses) # Alle Einträge holen
     return render_template('view-expenses.html', expenses=expenses)  # An das Template übergeben
 
 @app.route('/add-expenses.html', methods=['GET','POST'])
@@ -29,7 +27,7 @@ def add_expenses():
         description = request.form['description']
         amount = float(request.form['amount'])
         date = datetime.strptime(request.form['date'], '%Y-%m-%d')
-        testStorage.appendAusgaben()
+        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%Y-%m-%d'), datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
         
     return render_template('add-expenses.html')
 

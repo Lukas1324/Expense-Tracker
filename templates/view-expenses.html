@@ -4,6 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        h1 {
+            color: darkblue;
+            margin-bottom: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: darkblue;
+            color: white;
+        }
+        a {
+            text-decoration: none;
+            color: darkblue;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        table tr:hover {
+            background-color: #ddd;
+        }
+
+    </style>
 </head>
 <body>
     <h1>All Expenses</h1>
@@ -19,7 +63,7 @@
             <tr>
                 <td>{{ expense.content }}</td>
                 <td>{{ expense.amount }}</td>
-                <td>{{ expense.date.strftime('%d/%m/%Y') }}</td>
+                <td>{{ expense.date }}</td>
                 <td>{{ expense.created_at  }}</td>
             </tr>
             {% endfor %}
