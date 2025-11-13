@@ -1,11 +1,12 @@
 class AusgabenDTO:
-    def __init__(self, id, amount, content, date, created_at):
+    def __init__(self, id, amount, content, date, created_at, label):
         self.id = id
         self.amount = amount
         self.content = content
         self.date = date
         self.created_at = created_at
-       
+        self.label = label
+
     def getId(self):
         return self.id
     
@@ -20,4 +21,7 @@ class AusgabenDTO:
     
     def getCreatedAt(self):
         return self.created_at
+    
+    def getLabel(self):
+        return self.label
     

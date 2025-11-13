@@ -7,9 +7,8 @@ from Ausgaben import AusgabenDTO
 ### Make Login and then ceck if for user there is a database or create new one
 app = Flask(__name__)
 testStorage = Storage("test")  # Beispiel für einen Benutzernamen
+testStorage.createTables()
 
-
-####Läd so lange wsl weil die Daten erst von SQL gezogen werden müssen. Die sollten direkt geladen werden, bevor man auf die Seite geht
 
 @app.route('/')
 def home():
@@ -27,7 +26,8 @@ def add_expenses():
         description = request.form['description']
         amount = float(request.form['amount'])
         date = datetime.strptime(request.form['date'], '%Y-%m-%d')
-        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%Y-%m-%d'), datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+        label = request.form['label']   
+        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%Y-%m-%d'), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), label))
         
     return render_template('add-expenses.html')
 

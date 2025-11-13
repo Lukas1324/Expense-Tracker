@@ -15,18 +15,18 @@ class Storage:
     ###SQL------------------------------------------------------------------------------------------------------------------------------------
     def getAllFromSQL(self):
         self.clearLocalAusgaben()
-        self.cursor.execute("Select id, amount, content, date, created_at  From ausgaben")
-        for id, amount, content, date, created_at in self.cursor.fetchall():
-            self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at))
+        self.cursor.execute("Select id, amount, content, date, created_at, label  From ausgaben")
+        for id, amount, content, date, created_at, label in self.cursor.fetchall():
+            self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at, label))
         return self.ausgaben
         
     def insertAusgabeToSQL(self, ausgabe: AusgabenDTO):
-        self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at) VALUES (?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at))
+        self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at, label) VALUES (?, ?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at, ausgabe.label))
         self.conn.commit()
 
     def insertAllToSQL(self):
         for ausgabe in self.ausgaben:
-            self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at) VALUES (?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at))
+            self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at, label) VALUES (?, ?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at, ausgabe.label))
         
         self.conn.commit()  
 
@@ -38,7 +38,7 @@ class Storage:
         delZeile = self.cursor.fetchone()[0]
         print(delZeile)
 
-        self.cursor.execute("DELETE FROM ausgaben Where id = ?", (delZeile,))
+        self.cursor.execute("DELETE FROM ausgaben Where id = ?", (delZeile))
         self.conn.commit()
 
     def sonderManipulationSQL(self):
