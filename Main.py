@@ -16,8 +16,11 @@ def home():
 
 @app.route('/view-expenses.html', methods=['GET'])
 def view_expenses():
-
-    expenses = testStorage.getAllFromSQL()
+    # 1. Filter-Daten aus der URL lesen (request.args)
+    # .get() gibt None zurück, falls der Parameter fehlt (z.B. beim ersten Laden)
+    filter_label = request.args.get('category')
+    filter_month = request.args.get('month')
+    expenses = testStorage.getAllFromSQL(filter_label=filter_label, filter_month=filter_month)
     return render_template('view-expenses.html', expenses=expenses)  # An das Template übergeben
 
 @app.route('/add-expenses.html', methods=['GET','POST'])

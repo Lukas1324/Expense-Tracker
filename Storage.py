@@ -13,9 +13,21 @@ class Storage:
 
 
     ###SQL------------------------------------------------------------------------------------------------------------------------------------
-    def getAllFromSQL(self):
+    def getAllFromSQL(self, filter_label = None, filter_month = None):
         self.clearLocalAusgaben()
-        self.cursor.execute("Select id, amount, content, date, created_at, label  From ausgaben")
+        where_clauses = []
+        parameters = []
+
+        if filter_label:
+            where_clauses.append("label = ?")
+            parameters.append(filter_label)
+
+        if filter_month:
+            where_clauses.append("strftime('%m', date) = ?")
+            parameters.append(filter_month)  # Ensure month is two digits
+
+
+        self.cursor.execute("Select id, amount, content, date, created_at, label From ausgaben")
         for id, amount, content, date, created_at, label in self.cursor.fetchall():
             self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at, label))
         return self.ausgaben
@@ -50,7 +62,7 @@ class Storage:
 
 
 ######Old Code
-""""
+
     def clearLocalAusgaben(self):
         self.ausgaben = []
 
@@ -64,7 +76,7 @@ class Storage:
     def printStorage(self):
         for ausgabe in self.ausgaben:
             print(ausgabe.__str__())
-"""
+
 
 
 
