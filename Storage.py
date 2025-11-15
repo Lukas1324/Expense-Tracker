@@ -17,6 +17,7 @@ class Storage:
         self.clearLocalAusgaben()
         where_clauses = []
         parameters = []
+        baseQuery = "Select id, amount, content, date, created_at, label From ausgaben "
 
         if filter_label:
             where_clauses.append("label = ?")
@@ -27,7 +28,14 @@ class Storage:
             parameters.append(filter_month)  # Ensure month is two digits
 
 
-        self.cursor.execute("Select id, amount, content, date, created_at, label From ausgaben")
+
+        if len(where_clauses) > 0:
+            baseQuery += "WHERE " + " AND ".join(where_clauses)
+
+
+
+
+        self.cursor.execute(baseQuery, tuple(parameters))
         for id, amount, content, date, created_at, label in self.cursor.fetchall():
             self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at, label))
         return self.ausgaben
