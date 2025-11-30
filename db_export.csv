@@ -1,0 +1,10 @@
+id,amount,content,date,created_at,label
+18,50.0,Groceries,2024-05-10,2024-05-10 - 10:00:00,Food
+19,20.0,Taxi,2024-05-11,2024-05-11 - 12:30:00,Transport
+20,100.0,Electricity Bill,2024-05-12,2024-05-12 - 09:15:00,Utilities
+21,15.0,Lunch,2024-05-13,2024-05-13 - 13:00:00,Food
+22,30.0,Bus Ticket,2024-05-14,2024-05-14 - 08:45:00,Transport
+23,200.0,Internet Bill,2024-05-15,2024-05-15 - 11:20:00,Utilities
+24,32.0,Test,2025-11-26,2025-11-26 - 13:09:39,Entertainment
+25,32.0,Test,2025-11-26,2025-11-26 - 13:09:42,Food
+26,32.0,Test2,2025-11-26,2025-11-26 | 13:10:16,Entertainment

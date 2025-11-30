@@ -1,6 +1,7 @@
 from Ausgaben import AusgabenDTO
 import sqlite3
 from Tables import tabellen
+import pandas as pd
 
 
 
@@ -24,7 +25,7 @@ class Storage:
             parameters.append(filter_label)
 
         if filter_month:
-            where_clauses.append("strftime('%m', date) = ?")
+            where_clauses.append("strftime('%Y-%m', date) = ?")
             parameters.append(filter_month)  # Ensure month is two digits
 
 
@@ -39,7 +40,7 @@ class Storage:
         for id, amount, content, date, created_at, label in self.cursor.fetchall():
             self.appendAusgaben(AusgabenDTO(id, amount, content, date, created_at, label))
         return self.ausgaben
-        
+          
     def insertAusgabeToSQL(self, ausgabe: AusgabenDTO):
         self.cursor.execute("INSERT INTO ausgaben (amount, content, date, created_at, label) VALUES (?, ?, ?, ?, ?)", (ausgabe.amount, ausgabe.content, ausgabe.date, ausgabe.created_at, ausgabe.label))
         self.conn.commit()
@@ -47,6 +48,11 @@ class Storage:
     def insertAllToSQL(self, listAusgaben: list[AusgabenDTO]):
         for ausgabe in listAusgaben:
             self.insertAusgabeToSQL(ausgabe)
+
+    def dbToCSV(self, filename):
+        df = pd.read_sql_query("SELECT * FROM ausgaben", self.conn)
+        df.to_csv(filename, index=False, encoding='utf-8', sep=';')
+
 
     def closePipeline(self):
         self.conn.close()

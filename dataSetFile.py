@@ -1,10 +1,10 @@
 from Ausgaben import AusgabenDTO
 
-
-dataSet= [
-AusgabenDTO(1, 20.5, "Lunch", "01.06.2024", "01.06.2024 12:30:00", "Food"),
-AusgabenDTO(2, 15.0, "Taxi", "02.06.2024", "02.06.2024 09:00:00", "Transport"),
-AusgabenDTO(3, 100.0, "Groceries", "03.06.2024", "03.06.2024 18:45:00", "Shopping"),
-AusgabenDTO(4, 50.0, "Utilities", "04.06.2024", "04.06.2024 14:20:00", "Bills"),
-AusgabenDTO(5, 30.0, "Movie", "05.06.2024", "05.06.2024 20:15:00", "Entertainment")
+dataSet = [
+    AusgabenDTO(None, 50.0, "Groceries", "2024-05-10", "2024-05-10 - 10:00:00", "Food"),
+    AusgabenDTO(None, 20.0, "Taxi", "2024-05-11", "2024-05-11 - 12:30:00", "Transport"),
+    AusgabenDTO(None, 100.0, "Electricity Bill", "2024-05-12", "2024-05-12 - 09:15:00", "Utilities"),
+    AusgabenDTO(None, 15.0, "Lunch", "2024-05-13", "2024-05-13 - 13:00:00", "Food"),
+    AusgabenDTO(None, 30.0, "Bus Ticket", "2024-05-14", "2024-05-14 - 08:45:00", "Transport"),
+    AusgabenDTO(None, 200.0, "Internet Bill", "2024-05-15", "2024-05-15 - 11:20:00", "Utilities")
 ]

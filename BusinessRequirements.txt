@@ -1,5 +1,7 @@
 Add Filters for view_data
+-Done
 Add Export to CSV functionality
+-Done
 Add User Authentication
 Make it Online and not local
 Add Page graphics where the expenses are aggregated shown
@@ -9,6 +11,9 @@ Add Page graphics where the expenses are aggregated shown
 //Only if nothing is to do
 Add Multi-Currency Support
 Add Budgeting Features
+    -new page for this month, with a pie chart with the expenses by category
+    -in the page there should also be the ability to set a budget
+    -create new table to store budgets
 Add Recurring Expenses
 
 

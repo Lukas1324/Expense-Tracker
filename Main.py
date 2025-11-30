@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from Storage import Storage
@@ -28,11 +28,19 @@ def add_expenses():
     if request.method == 'POST':
         description = request.form['description']
         amount = float(request.form['amount'])
-        date = datetime.strptime(request.form['date'], '%d.%m.%Y')
+        date = datetime.strptime(request.form['date'], '%Y-%m-%d')
         label = request.form['label']   
-        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%d.%m.%Y'), datetime.now().strftime('%d.%m.%Y %h:%m:%s'), label))
+        testStorage.insertAusgabeToSQL(AusgabenDTO(None, amount, description, date.strftime('%Y-%m-%d'), datetime.now().strftime('%Y-%m-%d | %H:%M:%S'), label))
         
     return render_template('add-expenses.html')
+
+@app.route('/export-csv')
+def export_csv():
+    fileName = "db_export.csv"
+    path = r'C:\Users\lukiz\VS Programme\Just For Fun\Expense-Tracker\db_export.csv'
+    testStorage.dbToCSV(fileName)  # Exportiere die Datenbank in eine CSV-Datei
+    return send_file(path, as_attachment=True, download_name=fileName)
+
 
 if __name__ == '__main__':
     app.run(debug=True) 
